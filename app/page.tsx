@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 // Memuat komponen peta secara dinamis tanpa Server-Side Rendering (SSR)
-const MapKkn = dynamic(() => import('@/components/MapKkn'), {
+const MapKkn = dynamic(() => import('@/components/MapKKN'), {
   ssr: false,
   loading: () => <p className="text-center py-10">Memuat peta wilayah KKN...</p>
 });
