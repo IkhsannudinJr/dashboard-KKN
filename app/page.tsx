@@ -2,29 +2,24 @@
 
 import dynamic from 'next/dynamic';
 
-
 const MapKkn = dynamic(() => import('../components/MapKKN'), {
   ssr: false,
-  loading: () => <p className="text-center py-10">Memuat peta wilayah KKN...</p>
+  loading: () => (
+    <div className="flex h-screen w-screen items-center justify-center bg-slate-900 text-white">
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-400 border-t-transparent" />
+        <p className="text-sm font-medium text-slate-300">
+          Memuat citra satelit & peta sebaran KKN Wonogiri...
+        </p>
+      </div>
+    </div>
+  ),
 });
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <header>
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard KKN Wonogiri</h1>
-          <p className="text-gray-600">Pemetaan lokasi mahasiswa KKN di wilayah Kabupaten Wonogiri</p>
-        </header>
-
-        {/* Kotak Wadah Peta */}
-        <section className="bg-white p-4 rounded-xl shadow-md border border-gray-100">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Peta Lokasi KKN</h2>
-          <div className="w-full h-[450px] rounded-lg overflow-hidden border">
-            <MapKkn />
-          </div>
-        </section>
-      </div>
+    <main className="relative h-screen w-screen overflow-hidden bg-slate-950">
+      <MapKkn isFullWindow={true} />
     </main>
   );
 }
