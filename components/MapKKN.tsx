@@ -256,7 +256,7 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedKecamatan, setSelectedKecamatan] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DataKKN | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -778,12 +778,50 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
     }, 300);
   };
 
+  // ─── iOS-style glassmorphism token ───────────────────────────────────────
+  const glass = {
+    base: {
+      background: 'rgba(18,22,36,0.52)',
+      backdropFilter: 'blur(40px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+      border: '1px solid rgba(255,255,255,0.13)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.36), inset 0 1px 0 rgba(255,255,255,0.09)',
+    },
+    sidebar: {
+      background: 'rgba(14,19,32,0.68)',
+      backdropFilter: 'blur(48px) saturate(200%)',
+      WebkitBackdropFilter: 'blur(48px) saturate(200%)',
+      border: '1px solid rgba(255,255,255,0.11)',
+      boxShadow: '0 20px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08)',
+    },
+    card: {
+      background: 'rgba(255,255,255,0.04)',
+      border: '1px solid rgba(255,255,255,0.08)',
+    },
+    cardActive: {
+      background: 'rgba(16,185,129,0.09)',
+      border: '1px solid rgba(16,185,129,0.45)',
+      boxShadow: '0 0 0 3px rgba(16,185,129,0.12)',
+    },
+    input: {
+      background: 'rgba(255,255,255,0.05)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255,255,255,0.11)',
+    },
+    divider: { borderColor: 'rgba(255,255,255,0.08)' },
+    footer: {
+      background: 'rgba(0,0,0,0.28)',
+      borderColor: 'rgba(255,255,255,0.08)',
+    },
+  } as const;
+
   return (
     <div
       className={`relative w-full overflow-hidden font-sans select-none ${
         isFullWindow ? 'fixed inset-0 w-screen h-screen z-30' : 'h-[650px] rounded-2xl'
       } ${className}`}
-      style={{ backgroundColor: '#0f172a' }}
+      style={{ backgroundColor: '#0a0f1e' }}
     >
       {/* Kanvas Leaflet Full Window */}
       <div
@@ -792,11 +830,11 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         className="w-full h-full z-0 cursor-grab active:cursor-grabbing"
       />
 
-      {/* Floating Header Bar (Top Overlay) */}
-      <header className="absolute top-3 left-3 right-3 z-[1000] pointer-events-none flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+      {/* Floating Header Bar (Top Overlay) — Glassmorphism */}
+      <header className="absolute top-3 left-3 right-3 z-[1000] pointer-events-none flex flex-col md:flex-row md:items-start justify-between gap-2.5">
         {/* Identitas Bapperida & Judul */}
-        <div className="pointer-events-auto bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-slate-700/60 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-800/90 p-1 border border-slate-700/80 shadow-md shadow-emerald-950/40">
+        <div className="pointer-events-auto bg-white/8 backdrop-blur-xl text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-white/15 ring-1 ring-white/5 flex items-center gap-3" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)'}}>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl p-1 border shadow-md" style={{background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.15)'}}>
             <img
               src="/Seal_of_Wonogiri_Regency.svg"
               alt="Lambang Kabupaten Wonogiri"
@@ -819,9 +857,9 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
 
         {/* Quick Toolbar & Map Controls */}
-        <div className="pointer-events-auto flex items-center gap-2 flex-wrap justify-end">
+        <div className="pointer-events-auto flex flex-wrap items-center gap-1.5 justify-end">
           {/* Quick Stats Badges */}
-          <div className="hidden lg:flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/60 text-[11px]">
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[11px]" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderColor: 'rgba(255,255,255,0.12)'}}>
             <span className="text-orange-400 font-bold">🟠 {countProses} Proses</span>
             <span className="text-slate-600">•</span>
             <span className="text-emerald-400 font-bold">🟢 {countSelesai} Selesai</span>
@@ -830,7 +868,7 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
           </div>
 
           {/* Layer Selector */}
-          <div className="bg-slate-900/90 backdrop-blur-md p-1 rounded-xl shadow-xl border border-slate-700/60 flex items-center text-xs font-semibold">
+          <div className="p-1 rounded-xl shadow-xl flex items-center text-xs font-semibold" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)'}}>
             <button
               onClick={() => setActiveLayer('satellite')}
               title="Citra Satelit Asli Google Hybrid"
@@ -870,7 +908,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
           <button
             onClick={focusToWaduk}
             title="Fokus ke Waduk Gajah Mungkur"
-            className="bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-700/60 text-slate-200 hover:bg-slate-800 hover:text-sky-400 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            className="px-3 py-2 rounded-xl shadow-xl text-slate-200 hover:text-sky-400 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)'}}
           >
             <span>🌊</span>
             <span className="hidden sm:inline">Waduk Gajah Mungkur</span>
@@ -880,7 +919,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
           <button
             onClick={resetToWonogiri}
             title="Pusatkan kembali ke seluruh Kabupaten Wonogiri"
-            className="bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-700/60 text-slate-200 hover:bg-slate-800 hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            className="px-3 py-2 rounded-xl shadow-xl text-slate-200 hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+            style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)'}}
           >
             <span>🎯</span>
             <span className="hidden sm:inline">Reset Peta</span>
@@ -895,13 +935,14 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                 setIsPinModalOpen(true);
               }}
               title="Masuk sebagai Administrator Bapperida (Khusus Pengelola)"
-              className="bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-700/60 text-slate-300 hover:text-amber-400 hover:border-amber-500/50 hover:bg-slate-800 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+              className="px-3 py-2 rounded-xl shadow-xl text-slate-300 hover:text-amber-400 hover:border-amber-500/50 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+              style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)'}}
             >
               <span>🔒</span>
               <span className="hidden sm:inline">Admin</span>
             </button>
           ) : (
-            <div className="bg-amber-500/15 backdrop-blur-md border border-amber-500/40 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-xl">
+            <div className="backdrop-blur-xl border border-amber-500/40 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-xl" style={{background: 'rgba(245,158,11,0.12)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)'}}>
               <span className="text-amber-400 font-bold text-xs flex items-center gap-1">
                 <span>🛡️</span>
                 <span className="hidden sm:inline">Admin Mode</span>
@@ -921,7 +962,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
             onClick={toggleFullscreen}
             title={isFullscreen ? 'Keluar Mode Layar Penuh' : 'Mode Layar Penuh (Fullscreen)'}
             aria-label="Toggle Fullscreen"
-            className="bg-slate-900/90 backdrop-blur-md p-2 rounded-xl shadow-xl border border-slate-700/60 text-slate-200 hover:bg-slate-800 hover:text-white transition-colors"
+            className="p-2 rounded-xl shadow-xl text-slate-200 hover:text-white transition-colors"
+            style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)'}}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isFullscreen ? (
@@ -938,7 +980,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               setIsSidebarOpen(!isSidebarOpen);
               setTimeout(() => mapRef.current?.invalidateSize(), 250);
             }}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl shadow-xl shadow-emerald-900/30 transition-colors flex items-center gap-1.5 text-xs font-bold"
+            className="bg-emerald-600/80 hover:bg-emerald-500/90 backdrop-blur-xl text-white px-3 py-2 rounded-xl shadow-xl shadow-emerald-900/30 transition-colors flex items-center gap-1.5 text-xs font-bold border border-emerald-400/30"
+            style={{backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)'}}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -948,14 +991,21 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
       </header>
 
-      {/* Floating Collapsible Sidebar Panel */}
+      {/* Floating Collapsible Sidebar Panel — Glassmorphism */}
       <aside
-        className={`absolute top-20 bottom-4 left-3 z-[1000] w-80 sm:w-96 bg-slate-900/95 backdrop-blur-md text-white rounded-2xl shadow-2xl border border-slate-700/70 flex flex-col transition-all duration-300 ease-in-out ${
+        className={`absolute top-20 bottom-4 left-3 z-[1000] w-80 sm:w-96 text-white rounded-2xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-[115%] opacity-0 pointer-events-none'
         }`}
+        style={{
+          background: 'rgba(10,18,35,0.60)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.70), inset 0 1px 0 rgba(255,255,255,0.08)',
+        }}
       >
         {/* Panel Header & Filter */}
-        <div className="p-3.5 border-b border-slate-800">
+        <div className="p-3.5 border-b" style={{borderColor: 'rgba(255,255,255,0.08)'}}>
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
@@ -989,7 +1039,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               placeholder="Cari PTN, PIC, desa, kecamatan..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-7 py-2 bg-slate-800/90 rounded-xl border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full pl-8 pr-7 py-2 rounded-xl border text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/60 transition-all"
+              style={{background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)', borderColor: 'rgba(255,255,255,0.12)'}}
             />
             <svg
               className="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5"
@@ -1015,7 +1066,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               aria-label="Filter berdasarkan status"
-              className="w-full px-2 py-1.5 bg-slate-800 rounded-lg border border-slate-700 text-[11px] text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-2 py-1.5 rounded-lg border text-[11px] text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+              style={{background: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.12)'}}
             >
               <option value="all">Semua Status</option>
               <option value="Proses">🟠 Proses ({countProses})</option>
@@ -1027,7 +1079,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               value={selectedKecamatan}
               onChange={(e) => setSelectedKecamatan(e.target.value)}
               aria-label="Filter berdasarkan kecamatan"
-              className="w-full px-2 py-1.5 bg-slate-800 rounded-lg border border-slate-700 text-[11px] text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-2 py-1.5 rounded-lg border text-[11px] text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+              style={{background: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.12)'}}
             >
               <option value="all">Semua Kecamatan</option>
               {Object.values(KECAMATAN_COORDINATES).map((kec) => (
@@ -1061,9 +1114,13 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                   onClick={() => focusToKkn(item)}
                   className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-emerald-500 bg-slate-800 ring-2 ring-emerald-500/50 shadow-lg'
-                      : 'border-slate-800 bg-slate-800/60 hover:bg-slate-800 hover:border-slate-700'
+                      ? 'border-emerald-500/60 ring-2 ring-emerald-500/30 shadow-lg shadow-emerald-900/20'
+                      : 'hover:border-white/15'
                   }`}
+                  style={{
+                    background: isSelected ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.03)',
+                    borderColor: isSelected ? undefined : 'rgba(255,255,255,0.08)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-1.5">
@@ -1098,7 +1155,7 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
 
                   <p className="text-[11px] text-slate-400 mb-2 line-clamp-1">{item.ptnFullName}</p>
 
-                  <div className="bg-slate-900/60 rounded-lg p-2 text-[11px] text-slate-300 border border-slate-800/80 space-y-1 mb-2">
+                  <div className="rounded-lg p-2 text-[11px] text-slate-300 space-y-1 mb-2" style={{background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.07)'}}>
                     <div className="flex items-start gap-1">
                       <span className="text-slate-400 shrink-0">📍 Kec:</span>
                       <span className="font-medium text-emerald-400">{item.kecamatan.join(', ')}</span>
@@ -1126,7 +1183,7 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
 
         {/* Panel Footer */}
-        <div className="p-3 bg-slate-950/90 border-t border-slate-800 rounded-b-2xl text-[11px] text-slate-400 flex items-center justify-between">
+        <div className="p-3 border-t rounded-b-2xl text-[11px] text-slate-400 flex items-center justify-between" style={{background: 'rgba(0,0,0,0.30)', borderColor: 'rgba(255,255,255,0.07)'}}>
           {isAdmin ? (
             <button
               onClick={handleResetToDefault}
@@ -1147,8 +1204,8 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
       </aside>
 
-      {/* Floating Bottom Right Legend */}
-      <div className="absolute bottom-4 right-4 z-[1000] pointer-events-auto bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-2xl border border-slate-700/60 hidden sm:flex items-center gap-4 text-xs text-white">
+      {/* Floating Bottom Right Legend — Glassmorphism */}
+      <div className="absolute bottom-4 right-4 z-[1000] pointer-events-auto px-3.5 py-2 rounded-xl shadow-2xl hidden sm:flex items-center gap-4 text-xs text-white" style={{background: 'rgba(10,18,35,0.55)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)'}}>
         <span className="font-bold text-[11px] text-slate-400 uppercase tracking-wider">Status:</span>
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block shadow-sm shadow-orange-500"></span>
