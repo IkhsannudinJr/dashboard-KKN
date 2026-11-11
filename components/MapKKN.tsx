@@ -682,7 +682,7 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               📍 KEC. ${group.kecName.toUpperCase()}
             </div>
             <span style="font-size: 10px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 9999px;">
-              ${group.items.length} Usulan KKN
+              ${group.items.length} Kegiatan KKN
             </span>
           </div>
 
@@ -822,8 +822,6 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         <div className="pointer-events-auto flex items-center gap-2 flex-wrap justify-end">
           {/* Quick Stats Badges */}
           <div className="hidden lg:flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/60 text-[11px]">
-            <span className="text-slate-300 font-medium">📍 {kknData.length} Usulan</span>
-            <span className="text-slate-600">•</span>
             <span className="text-orange-400 font-bold">🟠 {countProses} Proses</span>
             <span className="text-slate-600">•</span>
             <span className="text-emerald-400 font-bold">🟢 {countSelesai} Selesai</span>
@@ -1166,39 +1164,47 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
       </div>
 
-      {/* MODAL FORM: Tambah & Edit Data KKN */}
+      {/* MODAL FORM: Tambah & Edit Data KKN (Glassmorphism Style) */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[2000] bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-[2000] bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-in fade-in duration-200">
+          <div className="relative bg-slate-900/80 backdrop-blur-2xl border border-white/15 rounded-3xl w-full max-w-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] ring-1 ring-white/10 overflow-hidden flex flex-col max-h-[92vh] transition-all">
+            {/* Ambient Background Glow Accent */}
+            <div className="absolute -top-24 -left-24 w-56 h-56 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-56 h-56 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
+
             {/* Modal Header */}
-            <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/30">
+            <div className="relative px-6 py-4.5 border-b border-white/10 flex items-center justify-between bg-slate-950/40 backdrop-blur-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-teal-400/20 text-emerald-300 flex items-center justify-center font-bold text-base border border-emerald-500/30 shadow-lg shadow-emerald-950/50">
                   {editingId ? '✏️' : '➕'}
                 </div>
                 <div>
-                  <h2 className="text-sm sm:text-base font-extrabold text-white">
-                    {editingId ? 'Edit Identitas & Profil KKN' : 'Tambah Kegiatan KKN Baru'}
+                  <h2 className="text-sm sm:text-base font-extrabold text-white tracking-tight flex items-center gap-2">
+                    <span>{editingId ? 'Edit Identitas & Profil KKN' : 'Tambah Kegiatan KKN Baru'}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">
+                      Bapperida
+                    </span>
                   </h2>
-                  <p className="text-[11px] text-slate-400">
-                    {editingId ? 'Perbarui data kampus, lokasi, atau status KKN' : 'Masukkan rincian KKN untuk ditampilkan di peta Wonogiri'}
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    {editingId ? 'Perbarui data kampus, lokasi, atau status kegiatan' : 'Masukkan data posko kegiatan KKN untuk pemetaan Wonogiri'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Tutup dialog"
               >
                 ✕
               </button>
             </div>
 
             {/* Modal Body Form */}
-            <form onSubmit={handleSaveForm} className="flex-1 overflow-y-auto p-5 space-y-4 text-xs text-slate-200 custom-scrollbar">
+            <form onSubmit={handleSaveForm} className="relative flex-1 overflow-y-auto p-6 space-y-4 text-xs text-slate-200 custom-scrollbar">
               {/* Row 1: Singkatan & Nama Lengkap PTN */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Singkatan Kampus <span className="text-rose-400">*</span>
                   </label>
                   <input
@@ -1207,11 +1213,11 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     placeholder="Contoh: IPB, UGM"
                     value={formData.ptn}
                     onChange={(e) => setFormData({ ...formData, ptn: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all shadow-inner"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Nama Lengkap Perguruan Tinggi
                   </label>
                   <input
@@ -1219,15 +1225,15 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     placeholder="Contoh: Institut Pertanian Bogor"
                     value={formData.ptnFullName}
                     onChange={(e) => setFormData({ ...formData, ptnFullName: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all shadow-inner"
                   />
                 </div>
               </div>
 
               {/* Row 2: Kode Usulan & Status */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Kode Usulan
                   </label>
                   <input
@@ -1235,17 +1241,17 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     placeholder="Contoh: 21308"
                     value={formData.kode}
                     onChange={(e) => setFormData({ ...formData, kode: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white font-mono focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all shadow-inner"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Status Kegiatan <span className="text-rose-400">*</span>
                   </label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as KKNStatus })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/60 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
                   >
                     <option value="Proses">🟠 Proses (Sedang Berjalan)</option>
                     <option value="Selesai">🟢 Selesai (Tuntas)</option>
@@ -1255,9 +1261,9 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
               </div>
 
               {/* Row 3: PIC & Kontak */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Nama PIC / Koordinator
                   </label>
                   <input
@@ -1265,11 +1271,11 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     placeholder="Contoh: Dr. Budi Santoso"
                     value={formData.pic}
                     onChange={(e) => setFormData({ ...formData, pic: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all shadow-inner"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Kontak / No. WhatsApp
                   </label>
                   <input
@@ -1277,22 +1283,22 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     placeholder="Contoh: 08123456789"
                     value={formData.kontak}
                     onChange={(e) => setFormData({ ...formData, kontak: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500 font-mono"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all font-mono shadow-inner"
                   />
                 </div>
               </div>
 
-              {/* Row 4: Pilihan Wilayah Kecamatan (Multi-Select Buttons) */}
+              {/* Row 4: Pilihan Wilayah Kecamatan (Multi-Select Pills) */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-[11px] font-semibold text-slate-300">
                     Kecamatan Wonogiri yang Dituju <span className="text-rose-400">*</span>
                   </label>
-                  <span className="text-[10px] text-emerald-400 font-medium">
+                  <span className="text-[10.5px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
                     Terpilih: {formData.kecamatan.length} Kecamatan
                   </span>
                 </div>
-                <div className="p-2.5 bg-slate-950/60 rounded-xl border border-slate-800 max-h-36 overflow-y-auto custom-scrollbar flex flex-wrap gap-1.5">
+                <div className="p-3 bg-slate-950/60 backdrop-blur-md rounded-2xl border border-white/10 max-h-36 overflow-y-auto custom-scrollbar flex flex-wrap gap-1.5 shadow-inner">
                   {Object.values(KECAMATAN_COORDINATES).map((kec) => {
                     const isSelected = formData.kecamatan.includes(kec.name);
                     return (
@@ -1300,10 +1306,10 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                         type="button"
                         key={kec.name}
                         onClick={() => toggleKecamatanSelection(kec.name)}
-                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+                        className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400'
-                            : 'bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700'
+                            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-950/60 border border-emerald-400/40 ring-1 ring-emerald-400/30'
+                            : 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/5'
                         }`}
                       >
                         {isSelected ? '✓ ' : ''}{kec.name}
@@ -1311,14 +1317,15 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                     );
                   })}
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">
-                  *Klik nama kecamatan untuk memilih/membatalkan. Pin peta otomatis dipasang pada koordinat kecamatan terpilih.
+                <p className="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1">
+                  <span>ℹ️</span>
+                  <span>Klik nama kecamatan untuk memilih/membatalkan. Pin otomatis terpasang pada koordinat wilayah.</span>
                 </p>
               </div>
 
               {/* Row 5: Rincian Lokasi / Desa */}
               <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                   Rincian Lokasi / Nama Desa Posko
                 </label>
                 <input
@@ -1326,39 +1333,39 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                   placeholder="Contoh: Desa Pokoh Kidul, Desa Sendang Ijo"
                   value={formData.lokasi}
                   onChange={(e) => setFormData({ ...formData, lokasi: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500"
+                  className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 transition-all shadow-inner"
                 />
               </div>
 
               {/* Row 6: Jadwal Pelaksanaan */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Tanggal Buka / Mulai
                   </label>
                   <input
                     type="date"
                     value={formData.tglBuka}
                     onChange={(e) => setFormData({ ...formData, tglBuka: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                     Tanggal Penutupan
                   </label>
                   <input
                     type="date"
                     value={formData.tglTutup}
                     onChange={(e) => setFormData({ ...formData, tglTutup: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
                   />
                 </div>
               </div>
 
               {/* Row 7: Catatan / Tinjauan */}
               <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
                   Catatan / Tema KKN
                 </label>
                 <textarea
@@ -1366,22 +1373,22 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
                   placeholder="Contoh: KKN Tematik Penurunan Stunting & Pemberdayaan UMKM..."
                   value={formData.tinjauan}
                   onChange={(e) => setFormData({ ...formData, tinjauan: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500 resize-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-950/50 backdrop-blur-sm rounded-xl border border-white/10 text-white focus:outline-none focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 placeholder-slate-500 resize-none transition-all shadow-inner"
                 />
               </div>
 
               {/* Modal Footer Buttons */}
-              <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-800">
+              <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-white/10">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
+                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-semibold transition-all cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold shadow-lg shadow-emerald-900/40 transition-all flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 active:scale-95 text-white font-bold shadow-lg shadow-emerald-500/25 border border-emerald-400/30 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>💾</span>
                   <span>{editingId ? 'Simpan Perubahan' : 'Tambah ke Peta'}</span>
@@ -1392,65 +1399,69 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
         </div>
       )}
 
-      {/* MODAL VERIFIKASI PIN ADMIN */}
+      {/* MODAL VERIFIKASI PIN ADMIN (Glassmorphism Style) */}
       {isPinModalOpen && (
-        <div className="fixed inset-0 z-[2100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-sm shadow-2xl p-5 text-white animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg border border-amber-500/30">
+        <div className="fixed inset-0 z-[2100] bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="relative bg-slate-900/85 backdrop-blur-2xl border border-white/15 rounded-3xl w-full max-w-sm shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] ring-1 ring-white/10 p-6 text-white overflow-hidden transition-all">
+            {/* Ambient Accent Glow */}
+            <div className="absolute -top-16 -right-16 w-40 h-40 bg-amber-500/15 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg border border-amber-500/30 shadow-md shadow-amber-950/40">
                   🔐
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-sm text-white">Login Admin Bapperida</h3>
+                  <h3 className="font-extrabold text-sm text-white tracking-tight">Login Admin Bapperida</h3>
                   <p className="text-[11px] text-slate-400">Khusus pengelola data KKN Wonogiri</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsPinModalOpen(false)}
-                className="w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Tutup dialog"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleVerifyPin} className="space-y-3.5">
+            <form onSubmit={handleVerifyPin} className="relative space-y-4">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1.5">
+                <label className="block text-[11px] font-semibold text-slate-300 mb-2">
                   Masukkan PIN / Sandi Admin:
                 </label>
                 <input
                   type="password"
                   autoFocus
-                  placeholder="PIN Sandi Admin..."
+                  placeholder="••••••••"
                   value={pinInput}
                   onChange={(e) => {
                     setPinInput(e.target.value);
                     setPinError('');
                   }}
-                  className="w-full px-3.5 py-2.5 bg-slate-800 rounded-xl border border-slate-700 text-white text-sm tracking-widest text-center font-mono focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-slate-500"
+                  className="w-full px-4 py-3 bg-slate-950/60 backdrop-blur-sm rounded-xl border border-white/10 text-white text-base tracking-widest text-center font-mono focus:outline-none focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 placeholder-slate-600 transition-all shadow-inner"
                 />
                 {pinError && (
                   <p className="text-[11px] text-rose-400 font-medium mt-2 flex items-center gap-1">
                     <span>⚠️</span> {pinError}
                   </p>
                 )}
-                <p className="text-[10px] text-slate-400 mt-2 bg-slate-800/50 p-2 rounded-lg border border-slate-800">
-                  ℹ️ Pengunjung / viewer publik tanpa PIN hanya bisa melihat peta interaktif (Read-Only).
+                <p className="text-[10px] text-slate-400 mt-2.5 bg-slate-950/40 p-2.5 rounded-xl border border-white/5">
+                  ℹ️ Pengunjung publik tanpa PIN tetap bisa melihat peta interaktif (Read-Only).
                 </p>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/10">
                 <button
                   type="button"
                   onClick={() => setIsPinModalOpen(false)}
-                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-xs font-semibold transition-all cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
+                  className="px-4.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-300 hover:to-orange-300 text-slate-950 text-xs font-black shadow-lg shadow-amber-500/25 border border-amber-300/40 active:scale-95 transition-all cursor-pointer"
                 >
                   Buka Akses Admin
                 </button>
