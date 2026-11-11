@@ -796,8 +796,12 @@ export default function MapKKN({ className = '', isFullWindow = true }: MapKKNPr
       <header className="absolute top-3 left-3 right-3 z-[1000] pointer-events-none flex flex-col md:flex-row md:items-center justify-between gap-2.5">
         {/* Identitas Bapperida & Judul */}
         <div className="pointer-events-auto bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-slate-700/60 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white font-black text-lg shadow-md shadow-emerald-500/25">
-            W
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-800/90 p-1 border border-slate-700/80 shadow-md shadow-emerald-950/40">
+            <img
+              src="/Seal_of_Wonogiri_Regency.svg"
+              alt="Lambang Kabupaten Wonogiri"
+              className="h-full w-full object-contain drop-shadow-md"
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">
